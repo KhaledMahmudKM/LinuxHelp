@@ -62,15 +62,12 @@ _Last Updated: May 25, 2020_
 1. Change the hostname using hostnamectl command.
 2. Then update the /etc/hosts file.
 
-```
+```sh
 vmadmin@LS02:~$sudo hostnamectl set-hostname ns1
-
 vmadmin@LS02:~$sudo nano /etc/hosts
+vmadmin@ns1:~$hostnamectl
 ```
-
-```
-vmadmin@ns1:~$ hostnamectl
-
+```yaml
    Static hostname: ns1
          Icon name: computer-vm
            Chassis: vm
@@ -82,8 +79,8 @@ vmadmin@ns1:~$ hostnamectl
       Architecture: x86-64
 ```
 
-```
-vmadmin@ns1:~$ cat /etc/hosts
+```sh
+vmadmin@ns1:~$cat /etc/hosts
 
 127.0.0.1 localhost
 127.0.1.1 ns1
@@ -95,12 +92,11 @@ ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 ```
 
-```
-vmadmin@ns1:~$ cat /etc/hostname
+```sh
+vmadmin@ns1:~$cat /etc/hostname
 
 ns1
 ```
-
 
 <hr>
 
@@ -108,9 +104,8 @@ ns1
 
 After cloning from an existing you may find that the machines ID of the new image is same as the old one. Change the machine ID. It&#39;s stored in /etc/machine-id file.
 
-```
+```sh
 vmadmin@LS02:~$sudo rm /etc/machine-id
-
 vmadmin@LS02:~$sudo systemd-machine-id-setup
 ```
 
@@ -121,9 +116,10 @@ If this does not create unique ID, just manually change the value (e.g. using na
 
 1. Create/Modify the .yaml file in /etc/netplan directory to configure IP addresses in the interfaces. The exact name of the yaml file is fixed. There may be more then one file in this directory. Example configuration is given below. Here the renderer is **networkd**.
 
+```sh
+user1@muserv1:~$vi /etc/netplan/01-netcfg.yaml
 ```
-user1@muserv1:~$ cat /etc/netplan/01-netcfg.yaml
-
+```yaml
 # This file describes the network interfaces available on your system
 # For more information, see netplan(5).
 network:
@@ -142,154 +138,122 @@ network:
 
 2. Use **sudo netplan apply** command to apply the changes. Verify the change using **ip address** command.
 
-```
+```sh
 vmadmin@LS02:~$sudo netplan apply
 vmadmin@LS02:~$ip address
 ```
 
 3. To start/restart/stop to check status of networkd service, use the following.
 
-```
+```sh
 vmadmin@LS02:~$sudo systemctl status system-networkd
 ```
+
 <hr>
 
 ## SSH Server Installation
 
 To get SSH access to a linux machine, you can install openssh-server. You can see the status of the server with systemctl command.
 
+```sh
 vmadmin@LS02:~$sudo apt-get install opensh-server
-
 vmadmin@LS02:~$sudo systemctl status ssh
-
-![](RackMultipart20210525-4-tcjlx1_html_6d1df207ab2198d5.png)
+```
 
 ### Checking Status of Services
 
 1. You can use **service --status-all** command or **systemctl list-unit-files** command to view the status all the installed services.
 
+```sh
 vmadmin@LS02:~$sudo service --status-all
-
 vmadmin@LS02:~$sudo systemctl list-unit-files
+```
 
-![](RackMultipart20210525-4-tcjlx1_html_38971b5b1eda0b3.png)
-
-![](RackMultipart20210525-4-tcjlx1_html_35317513c88252c2.png)
 
 1. Use **systemctl status**  **_servicename_** command or **service**  **_servicename_**  **status** command to see the status of a service. The following example shows the status of ssh service.
 
-vmadmin@LS02:~$ sudo service ssh status
-
+```sh
+vmadmin@LS02:~$sudo service ssh status
 vmadmin@LS02:~$sudo systemctl status ssh
-
 vmadmin@LS02:~$sudo systemctl list-unit-files | grep -i ssh.service
-
-![](RackMultipart20210525-4-tcjlx1_html_6d1df207ab2198d5.png)
+```
 
 # 2. DHCP Server
 
-### Install DHCP Server Package
+## Install DHCP Server Package
 
 The following steps show how to install and configure isc-dhcp-server.
 
 1. Make sure to update and upgrade the linux. The install the dhcp server package.
 
+```sh
 vmadmin@LS02:~$sudo apt update
-
 vmadmin@LS02:~$sudo apt apt upgrade
+vmadmin@LS02:~$sudo apt-get install isc-dhcp-server
+```
 
-vmadmin@LS02:~$ sudo apt-get install isc-dhcp-server
+1. Verify that all the files are installed in **/etc/dhcp/** directory.
 
-1. Verify that all the files are installed in /etc/dhcp/ directory.
 
-![](RackMultipart20210525-4-tcjlx1_html_5217f2f6a51450a5.png)
-
-### DHCP Server Configuration
+## DHCP Server Configuration
 
 1. Modify/update /etc/default/isc-dhcp-server file to indicate which interface DHCP service will be provided. Find the interface name using ip address command. Interface name is **ens160** in the example below.
 
-![](RackMultipart20210525-4-tcjlx1_html_68744d4dcd604931.png)
 
 1. Enter all the server configuration information in the /etc/dhcp/dhcpd.conf file. This file, by default, comes with a lot of configuration examples. You can use the following pattern to configure a range of IP addresses for dynamic allocation, along with domain-name, DNS server and gateway router settings. Also, you can reserve an IP address for static allocation (with MAC address binding).
 
-![](RackMultipart20210525-4-tcjlx1_html_568054b0b2538292.png)
 
-![](RackMultipart20210525-4-tcjlx1_html_b7050f8b41b4ccb1.png)
 
 1. Now, restart the dhcp service. Then you can verity the status of the service.
 
-![](RackMultipart20210525-4-tcjlx1_html_cb677c3457133748.png)
 
 1. Once the server starts distributing (leasing) IP addresses (and other information) to the clients, you can verify the leasing status using dhcp-lease-list command. You can also view the /var/lib/dhcp/dhcpd.leases file.
 
-![](RackMultipart20210525-4-tcjlx1_html_e2b4da1b56e4d0e5.png)
 
-![](RackMultipart20210525-4-tcjlx1_html_394bfe13f429fbf3.png)
-
-### Running DHCP6 Service
+## Running DHCP6 Service
 
 The isc-dhcp-server also provide DHCP6 service. Follow the steps below to make server provide IPv6 addresses to the clients.
 
 1. Make sure /etc/default/isc-dhcp-server file contains **INTERAFCESv6** parameter, set to the interface where the server is supposed to allocated IPv6 addresses. In the example above, it set to **ens160**.
 2. Modify the yaml file in /etc/netplan/ directory to set IPv6 address to the server, in proper interface.
-
+```
 user1@muserv1:~$ cat /etc/netplan/01-netcfg.yaml
-
+```
+```yaml
 # Generated by VMWare customization engine.
-
 network:
-
-version: 2
-
-renderer: networkd
-
-ethernets:
-
-ens160:
-
-dhcp4: no
-
-dhcp6: no
-
-addresses:
-
-- 192.168.144.12/24
-
-- 2001:db8:90::12/64
-
-gateway4: 192.168.144.1
-
-gateway6: 2001:db8:90::1
-
-nameservers:
-
-addresses:
-
-- 142.55.100.25
-
-- 142.55.44.25
-
-- 2001:db8:90::11
-
-user1@muserv1:~$
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens160:
+      dhcp4: no
+      dhcp6: no
+      addresses:
+        - 192.168.144.12/24
+        - 2001:db8:90::12/64
+      gateway4: 192.168.144.1
+      gateway6: 2001:db8:90::1
+      nameservers:
+        addresses:
+          - 142.55.100.25
+          - 142.55.44.25
+          - 2001:db8:90::11
+```
 
 1. Use **sudo netplan apply** command to apply the changes. Verify the change using **ip address** command.
 
+```sh
 vmadmin@LS02:~$sudo netplan apply
-
 vmadmin@LS02:~$ip address
+```
 
 1. Modify the provided /etc/dhcp/dhcpd6.conf file to include desired parameters. A sample is given below.
 
-![](RackMultipart20210525-4-tcjlx1_html_cbfbd66b96c46e03.png)
+2. Restart the DHCP6 service. Verify the status of the service.
 
-1. Restart the DHCP6 service. Verify the status of the service.
 
-![](RackMultipart20210525-4-tcjlx1_html_ebd0354e73f7f063.png)
-
-1. When a client gets a lease of IPv6 address from the server, you can verify the lease list.
-
-![](RackMultipart20210525-4-tcjlx1_html_f1be769deff74a7b.png)
+3. When a client gets a lease of IPv6 address from the server, you can verify the lease list.
+<hr>
 
 # 3. DNS Server Installation and Configuration
 
@@ -301,84 +265,58 @@ There are many places in Linux, you can find DNS related information.
 
 1. The file resolv.conf contains IP address of the internal (stub) resolver of the host. You don&#39;t need to this file. A sample output is given here.
 
-vmadmin@ns1:~$ cat /etc/resolv.conf
-
-_# This file is managed by man:systemd-resolved(8). Do not edit._
-
-_#_
-
-_# This is a dynamic resolv.conf file for connecting local clients to the_
-
-_# internal DNS stub resolver of systemd-resolved. This file lists all_
-
-_# configured search domains._
-
-_#_
-
-_# Run &quot;resolvectl status&quot; to see details about the uplink DNS servers_
-
-_# currently in use._
-
-_#_
-
-_# Third party programs must not access this file directly, but only through the_
-
-_# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,_
-
-_# replace this symlink by a static file or a different symlink._
-
-_#_
-
-_# See man:systemd-resolved.service(8) for details about the supported modes of_
-
-_# operation for /etc/resolv.conf._
-
+```sh
+vmadmin@ns1:~$cat /etc/resolv.conf
+```
+```conf
+# This file is managed by man:systemd-resolved(8). Do not edit.
+#
+# This is a dynamic resolv.conf file for connecting local clients to the
+# internal DNS stub resolver of systemd-resolved. This file lists all
+# configured search domains.
+#
+# Run &quot;resolvectl status&quot; to see details about the uplink DNS servers_
+# currently in use.
+#
+# Third party programs must not access this file directly, but only through the
+# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
+# replace this symlink by a static file or a different symlink.
+#
+# See man:systemd-resolved.service(8) for details about the supported modes of
+# operation for /etc/resolv.conf.
 nameserver 127.0.0.53
-
 options edns0
+```
 
-vmadmin@ns1:~$
 
 1. Your actual configuration can be found in the yaml file of netplan folder.
 
+```sh
 vmadmin@ns1:~$ cat /etc/netplan/00-installer-config.yaml
-
-_# This is the network config written by &#39;subiquity&#39;_
-
+```
+```yaml
+# This is the network config written by &#39;subiquity&#39;
 network:
-
   version: 2
-
   renderer: networkd
-
   ethernets:
-
     enp0s3:
-
       dhcp4: false
-
       addresses:
-
         - 192.168.144.11/24
-
       gateway4: 192.168.144.1
-
       nameservers:
-
-![](RackMultipart20210525-4-tcjlx1_html_3ac43594d0cda7c9.gif)        addresses:
-
+        addresses:
           - 192.168.144.1
-
     enp0s8:
-
       dhcp4: true
-
-vmadmin@ns1:~$
+```
 
 1. You can also check the runtime resolv.conf file to see what actual outside server is being used by the OS.
-
+```
 vmadmin@ns1:~$ cat /run/systemd/resolve/resolv.conf
-
+```
+```
 _# This file is managed by man:systemd-resolved(8). Do not edit._
 
 _#_
@@ -401,13 +339,15 @@ _# See man:systemd-resolved.service(8) for details about the supported modes of_
 
 _# operation for /etc/resolv.conf._
 
-![](RackMultipart20210525-4-tcjlx1_html_3ac43594d0cda7c9.gif)
+
 
 nameserver 192.168.144.1
-
+```
+```
 vmadmin@ns1:~$
+```
 
-### Install DNS Server: Bind9
+## Install DNS Server: Bind9
 
 1. Make sure to upgrade your system before you start.
 2. Then install bind9 and bind9utils. This will install the servers run (start it).
