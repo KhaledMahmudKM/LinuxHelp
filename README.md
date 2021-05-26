@@ -115,7 +115,7 @@ If this does not create unique ID, just manually change the value (e.g. using na
 
 ## IP Setting: Static and Dynamic
 
-1. Create/Modify the .yaml file in `/etc/netplan` directory to configure IP addresses in the interfaces. The exact name of the yaml file is fixed. There may be more then one file in this directory. Example configuration is given below. Here the renderer is **networkd**.
+1. Create/Modify the .yaml file in `/etc/netplan` directory to configure IP addresses in the interfaces. The exact name of the .yaml file is fixed. There may be more then one file in this directory. Example configuration is given below. Here the renderer is **networkd**.
 
 ```sh
 vi /etc/netplan/01-netcfg.yaml
@@ -287,7 +287,7 @@ There are many places in Linux, you can find DNS related information.
 ```shell
 cat /etc/resolv.conf
 ```
-```json
+```sh
 # This file is managed by man:systemd-resolved(8). Do not edit.
 #
 # This is a dynamic resolv.conf file for connecting local clients to the
@@ -334,9 +334,9 @@ network:
 3. You can also check the runtime `resolv.conf` file to see what actual outside server is being used by the OS.
 
 ```sh
-vmadmin@ns1:~$ cat /run/systemd/resolve/resolv.conf
+cat /run/systemd/resolve/resolv.conf
 ```
-```json
+```sh
 # This file is managed by man:systemd-resolved(8). Do not edit.
 #
 # This is a dynamic resolv.conf file for connecting local clients directly to
@@ -365,7 +365,7 @@ apt upgrade
 apt install bind9 bind9utils
 systemctl status named
 ```
-```yaml
+```sh
 ● named.service - BIND Domain Name Server
      Loaded: loaded (/lib/systemd/system/named.service; enabled; vendor preset: enabled)
      Active: active (running) since Tue 2020-06-09 02:24:27 UTC; 12min ago
@@ -383,7 +383,7 @@ Jun 09 02:24:27 ns1 named[30139]: resolver priming query complete
 ```shell
 ss -ltun
 ```
-```shell
+```yaml
 Netid  State   Recv-Q  Send-Q  Local Address:Port     Peer Address:Port  Process
 udp    UNCONN  0       0    192.168.56.109:53            0.0.0.0:\*
 udp    UNCONN  0       0    192.168.56.109:53            0.0.0.0:\*
@@ -420,7 +420,7 @@ List the files in the configuration directory of **bind9**, which is `/etc/bind`
 cd /etc/bind
 ls -l
 ```
-```json
+```sh
 total 48
 -rw-r--r-- 1 root root 1991 May 15 12:03 bind.keys
 -rw-r--r-- 1 root root  237 Apr 15 17:59 db.0
@@ -439,7 +439,6 @@ total 48
 cat db.local
 ```
 ```yaml
-;
 ; BIND data file for local loopback interface
 ;
 $TTL    604800
@@ -688,7 +687,7 @@ rtt min/avg/max/mdev = 14.637/15.556/17.177/1.149 ms
 host google.com 192.168.144.11
 ```
 
-```sh
+```yaml
 Using domain server:
 Name: 192.168.144.11
 Address: 192.168.144.11#53
@@ -784,7 +783,7 @@ systemctl status named
 ```sh
 cat /etc/bind/named.conf.local
 ```
-```vim
+```js
 //
 // Do any local configuration here
 //
