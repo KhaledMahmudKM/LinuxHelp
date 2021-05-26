@@ -61,9 +61,11 @@ _Last Updated: May 25, 2020_
 hostnamectl set-hostname ns1
 nano /etc/hosts
 ```
+
 ```sh
 hostnamectl
 ```
+
 ```yaml
    Static hostname: ns1
          Icon name: computer-vm
@@ -79,7 +81,7 @@ hostnamectl
 ```sh
 cat /etc/hosts
 ```
-```json
+```vim
 127.0.0.1 localhost
 127.0.1.1 ns1
 #The following lines are desirable for IPv6 capable hosts
@@ -91,9 +93,9 @@ ff02::2 ip6-allrouters
 ```
 
 ```sh
-vmadmin@ns1:~$cat /etc/hostname
+cat /etc/hostname
 ```
-```json
+```vim
 ns1
 ```
 
@@ -436,7 +438,7 @@ total 48
 ```shell
 cat db.local
 ```
-```json
+```yaml
 ;
 ; BIND data file for local loopback interface
 ;
@@ -493,6 +495,7 @@ options {
 ```
 
 4. Restart the server and check the status.
+
 ```shell
 sudo systemctl restart named
 sudo systemctl status named
@@ -548,7 +551,7 @@ cd zones
 nano db.for.khaledmahmud.net
 cat db.for.khaledmahmud.net
 ```
-```js
+```vim
 ;
 ; BIND data file for khaledmahmud.net.
 ;
@@ -585,11 +588,13 @@ ftp     IN      CNAME       www.khaledmahmud.net.
 ```
 
 7. Create zone database file for reverse zone. Again, The name and location must match the `named.conf.local` file.
+
 ```shell
 nano db.rev.khaledmahmud.net
 cat db.rev.khaledmahmud.net
 ```
-```json
+
+```vim
 ;
 ; BIND reverse data file for khaledmahmud.net 192.168.144 subnet
 ;
@@ -610,9 +615,11 @@ $TTL    604800          ; default TTL, 1W
 
 
 8. Now, update the `netplan` `.yaml` file with the new DNS server IP address (192.168.144.11). Apply `netplan` change. Add `search` item under `nameservers` item.
+
 ```shell
 cat /etc/netplan/00-installer-config.yaml
 ```
+
 ```yaml
 # This is the network config written by 'subiquity';
 network:
@@ -641,7 +648,6 @@ systemctl status named
 9. Before you restart the server again, check of the configuration is OK. Also, check the zone files are defined properly. Use 'named-checkconf' and 'named-checkzone' utilities.
 
 ```shell
-
 #Check the configuration
 named-checkconf
 
@@ -667,11 +673,11 @@ See the sample output here.
 ```shell
 ping www.google.com
 ```
-```json
+```shell
 PING www.google.com (172.217.164.228) 56(84) bytes of data.
-64 bytes from yyz12s05-in-f4.1e100.net (172.217.164.228): icmp\_seq=1 ttl=54 time=14.6 ms
-64 bytes from yyz12s05-in-f4.1e100.net (172.217.164.228): icmp\_seq=2 ttl=54 time=14.9 ms
-64 bytes from yyz12s05-in-f4.1e100.net (172.217.164.228): icmp\_seq=3 ttl=54 time=17.2 ms
+64 bytes from yyz12s05-in-f4.1e100.net (172.217.164.228): icmp_seq=1 ttl=54 time=14.6 ms
+64 bytes from yyz12s05-in-f4.1e100.net (172.217.164.228): icmp_seq=2 ttl=54 time=14.9 ms
+64 bytes from yyz12s05-in-f4.1e100.net (172.217.164.228): icmp_seq=3 ttl=54 time=17.2 ms
 ^C
 --- www.google.com ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2003ms
@@ -699,10 +705,11 @@ google.com mail is handled by 20 alt1.aspmx.l.google.com.
 
 
 3. Use `dig` utility to see the resource records.
+
 ```sh
 dig google.com
 ```
-```sh
+```shell
 ; <<>> DiG 9.16.1-Ubuntu <<>> google.com
 ;; global options: +cmd
 ;; Got answer:
@@ -727,7 +734,7 @@ Once than a Primary server has been configured, secondary servers can be added t
 
 1. In the primary server's configuration file (`/etc/bind/named.conf`.local), make sure to allow transfer request from the secondary server. Modify both the forward zone and reverse zone.
 
-```json
+```vim
 // Allow zone transfer from our secondary server only
   allow-transfer { 192.168.144.12 ;};
   also-notify {192.168.144.12; };
@@ -755,7 +762,7 @@ hostnamectl
 ```sh
 cat /etc/hosts
 ```
-```json
+```vim
 127.0.0.1       localhost
 127.0.1.1       ns2
 # The following lines are desirable for IPv6 capable hosts_
@@ -766,6 +773,7 @@ ff02::2 ip6-allrouters
 
 
 3. Install `bind9` and `bind9utils`.
+
 ```sh
 apt install bind9 bind9utils
 systemctl status named
@@ -776,13 +784,13 @@ systemctl status named
 ```sh
 cat /etc/bind/named.conf.local
 ```
-```json
+```vim
 //
 // Do any local configuration here
 //
 // Consider adding the 1918 zones here, if they are not used in your
 // organization
-//include &quot;/etc/bind/zones.rfc1918&quot;;
+//include "/etc/bind/zones.rfc1918";
 //Forward zone
 zone "khaledmahmud.net" {
         type slave;
@@ -800,12 +808,14 @@ zone "144.168.192.in-addr.apra" {
 
 
 5. Check the configuration using `named-checkconf` tool.
+
 ```sh
 named-checkconf
 ```
 
 
 6. Restart the server and check the status to make sure it is active.
+
 ```sh
 systemctl restart named
 sudo systemctl status named
@@ -814,9 +824,11 @@ sudo systemctl status named
 There is no need to configure the databases because the secondary servers do not maintain such files. Instead, they receive all the naming information from the primary servers which are the only authorized to create new entries in the naming databases. The databases are stored in `/var/cache/bind` directory.
 
 7. Verify the server's operation using `nslookup`, `host` and `dig` tools.
+
 ```sh
 nslookup ns1
 ```
+
 ```yaml
 Server:         127.0.0.53
 Address:        127.0.0.53#53
@@ -829,7 +841,7 @@ Address: 192.168.144.11
 nslookup 192.168.144.13
 ```
 
-```json
+```vim
 13.144.168.192.in-addr.arpa     name = mail1.khaledmahmud.net.
 Authoritative answers can be found from:
 ```
@@ -911,6 +923,7 @@ khaledmahmud.net.       604800  IN      NS      ns1.khaledmahmud.net.
 
 
 8. You can setup a client PC which configured with only the secondary DNS server. You can verify that the secondary DNS server correctly resolves the dns query. The following example is from VPCS in GNS3.
+
 ```sh
 PC1>show ip
 ```
@@ -932,14 +945,14 @@ MTU:        : 1500
 ```sh
 PC1>ping www.yahoo.com
 ```
-```sh
+```vim
 www.yahoo.com ->> new-fp-shed.wg1.b.yahoo.com
 new-fp-shed.wg1.b.yahoo.com resolved to 72.30.35.10
-84 bytes from 72.30.35.10 icmp\_seq=1 ttl=127 time=31.124 ms
-84 bytes from 72.30.35.10 icmp\_seq=2 ttl=127 time=108.838 ms
-84 bytes from 72.30.35.10 icmp\_seq=3 ttl=127 time=26.307 ms
-84 bytes from 72.30.35.10 icmp\_seq=4 ttl=127 time=25.554 ms
-84 bytes from 72.30.35.10 icmp\_seq=5 ttl=127 time=25.334 ms
+84 bytes from 72.30.35.10 icmp_seq=1 ttl=127 time=31.124 ms
+84 bytes from 72.30.35.10 icmp_seq=2 ttl=127 time=108.838 ms
+84 bytes from 72.30.35.10 icmp_seq=3 ttl=127 time=26.307 ms
+84 bytes from 72.30.35.10 icmp_seq=4 ttl=127 time=25.554 ms
+84 bytes from 72.30.35.10 icmp_seq=5 ttl=127 time=25.334 ms
 
 ```
 
@@ -969,12 +982,14 @@ iptables -t nat -A POSTROUTING -s 10.99.99.0/24 -o enp0s3 -j MASQUERADE
 
 
 2. Check the new rule.
+
 ```sh
 iptables -t nat -L
 ```
 
 
 3. Make the rule persistent with boot. First install the package called iptables-persistent. The save the rule(s) in `/etc/iptables/rules.v4` file. The iptables-persistent tool reads this file during boot.
+
 ```sh
 apt install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
