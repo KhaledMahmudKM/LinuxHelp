@@ -381,7 +381,7 @@ Jun 09 02:24:27 ns1 named[30139]: resolver priming query complete
 ```shell
 ss -ltun
 ```
-```json
+```shell
 Netid  State   Recv-Q  Send-Q  Local Address:Port     Peer Address:Port  Process
 udp    UNCONN  0       0    192.168.56.109:53            0.0.0.0:\*
 udp    UNCONN  0       0    192.168.56.109:53            0.0.0.0:\*
