@@ -471,25 +471,14 @@ cp named.conf.local named.conf.local.org
 ```shell
 cat named.conf.options
 ```
-```json
+```js
 options {
         directory "/var/cache/bind";
-        // If there is a firewall between you and nameservers you want
-        // to talk to, you may need to fix the firewall to allow multiple
-        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
-        // If your ISP provided one or more IP addresses for stable
-        // nameservers, you probably want to use them as forwarders.
-        // Uncomment the following block, and insert the addresses replacing
-        // the all-0's placeholder.
-        //Edit the options file for add the following
         //Add forwarders, use ISP's or some public DNS server
         forwarders {
                 192.168.144.1; 8.8.8.8;
         };
        //========================================================================
-        // If BIND logs error messages about the root key being expired,
-        // you will need to update your keys.  See https://www.isc.org/bind-keys
-        //========================================================================
         //Allow query only from own machine or local subnet hosts; or any intended subnet
         //You can specify both IPv4 and IPv6 hosts/subnets
         allow-query { localhost; 192.168.144.0/24; };
@@ -515,7 +504,7 @@ sudo systemctl status named
 cat named.conf.local
 ```
 
-```json
+```js
 // Do any local configuration here
 //
 // Consider adding the 1918 zones here, if they are not used in your
@@ -559,7 +548,7 @@ cd zones
 nano db.for.khaledmahmud.net
 cat db.for.khaledmahmud.net
 ```
-```json
+```js
 ;
 ; BIND data file for khaledmahmud.net.
 ;
@@ -731,6 +720,7 @@ google.com.             36      IN      A       172.217.0.238
 ;; MSG SIZE  rcvd: 55
 ```
 <hr>
+
 ## DNS Configuration (Secondary Server)
 
 Once than a Primary server has been configured, secondary servers can be added to the naming domain. But the primary server is the master for the zone, so a reference to the secondary server must be included in the primary server before anything else. Let us assume that the secondary server IPv4 address is 192.168.144.12.
