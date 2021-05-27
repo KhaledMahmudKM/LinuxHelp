@@ -383,7 +383,7 @@ Jun 09 02:24:27 ns1 named[30139]: resolver priming query complete
 ```shell
 ss -ltun
 ```
-```yaml
+```vim
 Netid  State   Recv-Q  Send-Q  Local Address:Port     Peer Address:Port  Process
 udp    UNCONN  0       0    192.168.56.109:53            0.0.0.0:\*
 udp    UNCONN  0       0    192.168.56.109:53            0.0.0.0:\*
@@ -438,7 +438,7 @@ total 48
 ```shell
 cat db.local
 ```
-```yaml
+```vim
 ; BIND data file for local loopback interface
 ;
 $TTL    604800
@@ -687,7 +687,7 @@ rtt min/avg/max/mdev = 14.637/15.556/17.177/1.149 ms
 host google.com 192.168.144.11
 ```
 
-```yaml
+```bash
 Using domain server:
 Name: 192.168.144.11
 Address: 192.168.144.11#53
@@ -873,7 +873,7 @@ googlemail.l.google.com. 298    IN      A       172.217.1.165
 dig google.com MX
 ```
 
-```yaml
+```vim
 ; <<>> DiG 9.16.1-Ubuntu <<>> google.com MX
 ;; global options: +cmd
 ;; Got answer:
@@ -901,7 +901,7 @@ google.com.             238     IN      MX      40 alt3.aspmx.l.google.com.
 dig khaledmahmud.net NS
 ```
 
-```yaml
+```vim
 ; <<>> DiG 9.16.1-Ubuntu <<>> khaledmahmud.net NS
 ;; global options: +cmd
 ;; Got answer:
