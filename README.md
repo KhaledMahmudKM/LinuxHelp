@@ -1,56 +1,51 @@
 # Useful Linux Commands and Procedures
 
 
-Khaled Mahmud
+### Khaled Mahmud
 
-Khaled.mahmud@unidesh.com
+_Khaled.mahmud@unidesh.com_
 
 
 _Last Updated: May 25, 2020_
 <hr>
-# Contents
+Table of Contents
 
 
-[1. Some Basic Linux Commands](#_Toc71706801)
+(#1-some-basic-linux-commadstasks-)
+  - [Change Hostname](#change-hostname)
+  - [Change Machine ID](#change-machine-id)
+  - [IP Setting: Static and Dynamic](#ip-setting-static-and-dynamic)
+  - [SSH Server Installation](#ssh-server-installation)
+  - [Checking Status of Services](#checking-status-of-services)
+- [Useful Linux Commands and Procedures](#useful-linux-commands-and-procedures)
+    - [Khaled Mahmud](#khaled-mahmud)
+- [1. Some Basic Linux Commads/Tasks <a id="some-basic-linux-commands"></a>](#1-some-basic-linux-commadstasks-)
+  - [Change Hostname](#change-hostname)
+  - [Change Machine ID](#change-machine-id)
+  - [IP Setting: Static and Dynamic](#ip-setting-static-and-dynamic)
+  - [SSH Server Installation](#ssh-server-installation)
+  - [Checking Status of Services](#checking-status-of-services)
+- [2. DHCP Server](#2-dhcp-server)
+  - [Install DHCP Server Package](#install-dhcp-server-package)
+  - [DHCP Server Configuration](#dhcp-server-configuration)
+  - [Running DHCP6 Service](#running-dhcp6-service)
+- [3. DNS Server Installation and Configuration](#3-dns-server-installation-and-configuration)
+  - [Verify Current Name Server(s)](#verify-current-name-servers)
+  - [Install DNS Server: Bind9](#install-dns-server-bind9)
+    - [Verify Bind Configuration Directory](#verify-bind-configuration-directory)
+    - [DNS Configuration (Primary Server)](#dns-configuration-primary-server)
+  - [Verify DNS Operation](#verify-dns-operation)
+  - [DNS Configuration (Secondary Server)](#dns-configuration-secondary-server)
+- [4. Enable NAT in Linux](#4-enable-nat-in-linux)
+  - [Enable IP Forwarding (Routing)](#enable-ip-forwarding-routing)
+  - [Configure IPTABLES](#configure-iptables)
 
-- [Change hostname](#_Toc71706802)
-
-- [Change Machine ID](#_Toc71706803)
-
-- [IP Setting: Static and Dynami](#_Toc71706804)
-
-- [SSH Server Installation](#_Toc71706805)
-
-- [Checking Status of Services](#_Toc71706806)
-
-[2. DHCP Server](#_Toc71706807)
-
-- [Install DHCP Server Package](#_Toc71706808)
-
-- [DHCP Server Configuration](#_Toc71706809)
-
-- [Running DHCP6 Service](#_Toc71706810)
-
-[3. DNS Server Installation and Configuration](#_Toc71706811)
-
-- [Verify Current Name Server(s)](#_Toc71706812)
-
-- [Install DNS Server: Bind9](#_Toc71706813)
-
-- [Verify Bind Configuration Directory](#_Toc71706814)
-
-- [DNS Configuration (Primary Server)](#_Toc71706815)
-
-- [Verify DNS Operation](#_Toc71706816)
-
-- [DNS Configuration (Secondary Server)](#_Toc71706817)
-
-[4. Create NAT](#_Toc71706818)
 
 <hr>
 <hr>
 
-# 1. Some Basic Linux Commads/Tasks
+
+# 1. Some Basic Linux Commads/Tasks <a id="some-basic-linux-commands"></a>
 
 ## Change Hostname
 
@@ -506,7 +501,7 @@ sudo systemctl status named
 cat named.conf.local
 ```
 
-```js
+```vim
 // Do any local configuration here
 //
 // Consider adding the 1918 zones here, if they are not used in your
